@@ -1,0 +1,21 @@
+{
+  "name": "omaximus/laravel-pivot-polymorph",
+  "description": "Fully polymorphic pivot relations for laravel eloquent",
+  "keywords": ["laravel", "relations", "polymorphic"],
+  "require": {
+    "php": ">=7.1.3|^8.0",
+    "illuminate/database": "~6.0|~7.0|~8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Pisochek\\PivotPolymorph\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Pisochek\\PivotPolymorph\\Test\\": "tests"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
