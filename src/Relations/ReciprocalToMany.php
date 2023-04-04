@@ -252,12 +252,13 @@ class ReciprocalToMany extends MorphToMany
 
         foreach ($groupedResults as $key => $results) {
             /** @var Model $model */
-            $model = static::getMorphedModel($key);
+            $model = $key;
             /** @var \Illuminate\Database\Query\Builder $modelQuery */
 
             $modelQuery = $model::whereIn($this->parentKey, $results->pluck($related ? $this->foreignPivotKey : $this->relatedPivotKey)); 
                 /** @var Collection $modelResults */
-                $modelResults = $modelQuery->get();
+
+            $modelResults = $modelQuery->get();
 
             // Fill pivot table
             foreach ($results as $result) {

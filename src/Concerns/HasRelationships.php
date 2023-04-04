@@ -11,6 +11,7 @@ use Pisochek\PivotPolymorph\Relations\MorphsTo;
 use Pisochek\PivotPolymorph\Relations\MorphsToMany;
 use Pisochek\PivotPolymorph\Relations\MorphToManyMultiConnection;
 use Pisochek\PivotPolymorph\Relations\ReciprocalToMany;
+use Pisochek\PivotPolymorph\Relations\MorphsToReciprocal;
 
 trait HasRelationships
 {
@@ -50,6 +51,59 @@ trait HasRelationships
         list($type, $foreignPivotKey) = $this->getMorphs(Str::snake($name), $type, $foreignPivotKey);
 
         return new MorphsTo(
+            $this, $name, $relatedName, $table, $foreignPivotKey, $relatedPivotKey, $type, $relatedType,
+            $parentKey ?: $this->getKeyName(), $relatedKey ?: 'id', $withTrashed
+        );
+    }
+
+    /**
+     * Define fully relation with specified related model
+    */
+    public function getReciprocals() {
+        return $this->morphsToRepo('link_from', 'link_to', 'connections');
+    }
+
+    /**
+     * Define fully relation with specified related model
+    */
+    public function getModelReciprocal($related) {
+        return $this->ReciprocalMany($related, 'link_from', 'link_to', 'connections');
+    }
+
+    /**
+     * Define fully polymorphic relation
+     *
+     * @param $name
+     * @param $relatedName
+     * @param $table
+     * @param null $type
+     * @param null $relatedType
+     * @param null $foreignPivotKey
+     * @param null $relatedPivotKey
+     * @param null $parentKey
+     * @param null $relatedKey
+     * @param bool $withTrashed
+     *
+     * @return \Pisochek\PivotPolymorph\Relations\MorphsToReciprocal
+     */
+    public function morphsToRepo(
+        $name,
+        $relatedName,
+        $table,
+        $foreignPivotKey = null,
+        $relatedPivotKey = null,
+        $parentKey = null,
+        $type = null,
+        $relatedType = null,
+        $relatedKey = null,
+        $withTrashed = false
+    ) {
+        list($relatedType, $relatedPivotKey) = $this->getMorphs(
+            Str::snake($relatedName), $relatedType, $relatedPivotKey
+        );
+        list($type, $foreignPivotKey) = $this->getMorphs(Str::snake($name), $type, $foreignPivotKey);
+
+        return new MorphsToReciprocal(
             $this, $name, $relatedName, $table, $foreignPivotKey, $relatedPivotKey, $type, $relatedType,
             $parentKey ?: $this->getKeyName(), $relatedKey ?: 'id', $withTrashed
         );
@@ -130,7 +184,6 @@ trait HasRelationships
         list($relatedType, $relatedPivotKey) = $this->getMorphs(
             Str::snake($relatedName), $relatedType, $relatedPivotKey
         );
-
         $instance = $this->newRelatedInstance($related);
 
         $table = $table ?: (Str::plural($name) . '_' . Str::plural($relatedName));
