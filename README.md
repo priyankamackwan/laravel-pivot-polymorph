@@ -7,5 +7,3 @@ We can use below functions for get reciprocal relationship.
  
  `GetModelReciprocal(Model::Class)`
  `getReciprocals`
-
-Use morphMap in model if needed
