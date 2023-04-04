@@ -5,7 +5,7 @@ This package supports fully morph reciprocalMany relation.
 ## Usage
 We can use below functions for get reciprocal relationship.
  
- `GetModelReciprocal`
+ `GetModelReciprocal(Model::Class)`
  `getReciprocals`
 
 Use morphMap in model if needed
